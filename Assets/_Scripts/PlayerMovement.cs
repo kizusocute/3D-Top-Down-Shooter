@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private PlayerInput playerInput;
+
     private InputSystem_Actions inputActions;
     private CharacterController characterController;
     private Animator animator;
@@ -13,7 +15,8 @@ public class PlayerMovement : MonoBehaviour
     private float verticalVelocity;
     const float GRAVITY = 9.81f;
     const float GROUND_STICK = -.5f;
-    private float dampTime =  .1f;
+    private float dampTime =  0.1f;
+
     [Header("Movement")]
     public Vector3 moveDirection;
     bool isRunning = false;
@@ -26,19 +29,30 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]private Transform aimPoint;
     private Vector3 lookingDirection;
 
-    private void Awake()
+    private void Start()
     {
+        characterController = GetComponent<CharacterController>();
+        animator = GetComponentInChildren<Animator>();
+        playerInput = GetComponent<PlayerInput>();
+
         AssignInputActionSystem();
+
+        speed = walkSpeed;
+    }
+
+    private void Update()
+    {
+        ApplyMovement();
+        AimTowardsMouse();
+        AnimatorController();
     }
 
     private void AssignInputActionSystem()
     {
-        inputActions = new InputSystem_Actions();
+        inputActions = playerInput.inputActions;
 
         inputActions.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Move.canceled += ctx => moveInput = Vector2.zero;
-
-        inputActions.Player.Attack.performed += ctx => Shoot();
 
         inputActions.Player.Aim.performed += ctx => aimInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Aim.canceled += ctx => aimInput = Vector2.zero;
@@ -53,34 +67,6 @@ public class PlayerMovement : MonoBehaviour
             isRunning = false;
             speed = walkSpeed;
         };
-    }
-
-    private void Shoot()
-    {
-        animator.SetTrigger("Fire");
-    }
-
-    private void OnEnable()
-    {
-        inputActions.Player.Enable();
-    }
-    private void OnDisable()
-    {
-        inputActions.Player.Disable();
-    }
-    private void Start()
-    {
-        characterController = GetComponent<CharacterController>();
-        animator = GetComponentInChildren<Animator>();
-
-        speed = walkSpeed;
-    }
-
-    private void Update()
-    {
-        ApplyMovement();
-        AimTowardsMouse();
-        AnimatorController();
     }
 
     private void AnimatorController()
