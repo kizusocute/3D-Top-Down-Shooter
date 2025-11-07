@@ -38,6 +38,8 @@ public class PlayerMovement : MonoBehaviour
         inputActions.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Move.canceled += ctx => moveInput = Vector2.zero;
 
+        inputActions.Player.Attack.performed += ctx => Shoot();
+
         inputActions.Player.Aim.performed += ctx => aimInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Aim.canceled += ctx => aimInput = Vector2.zero;
 
@@ -51,6 +53,11 @@ public class PlayerMovement : MonoBehaviour
             isRunning = false;
             speed = walkSpeed;
         };
+    }
+
+    private void Shoot()
+    {
+        animator.SetTrigger("Fire");
     }
 
     private void OnEnable()
