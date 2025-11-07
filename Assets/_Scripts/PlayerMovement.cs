@@ -16,7 +16,10 @@ public class PlayerMovement : MonoBehaviour
     private float dampTime =  .1f;
     [Header("Movement")]
     public Vector3 moveDirection;
-    [SerializeField] private float moveSpeed = 5f;
+    bool isRunning = false;
+    private float speed;
+    [SerializeField] private float walkSpeed = 1.5f;
+    [SerializeField] private float runSpeed = 3f;
 
     [Header("Aiming")]
     [SerializeField]private LayerMask aimLayerMask;
@@ -25,6 +28,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+        AssignInputActionSystem();
+    }
+
+    private void AssignInputActionSystem()
+    {
         inputActions = new InputSystem_Actions();
 
         inputActions.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
@@ -32,6 +40,17 @@ public class PlayerMovement : MonoBehaviour
 
         inputActions.Player.Aim.performed += ctx => aimInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Aim.canceled += ctx => aimInput = Vector2.zero;
+
+        inputActions.Player.Run.performed += ctx =>
+        {
+                isRunning = true;
+                speed = runSpeed;
+        };
+        inputActions.Player.Run.canceled += ctx =>
+        {
+            isRunning = false;
+            speed = walkSpeed;
+        };
     }
 
     private void OnEnable()
@@ -46,6 +65,8 @@ public class PlayerMovement : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
+
+        speed = walkSpeed;
     }
 
     private void Update()
@@ -57,11 +78,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void AnimatorController()
     {
-        float xVelocity = Vector3.Dot(moveDirection.normalized, transform.right);
+        float xVelocity = Vector3.Dot(moveDirection.normalized, transform.right);//so sanh huong di chuyen voi huong ngang cua player
         float zVelocity = Vector3.Dot(moveDirection.normalized, transform.forward);
 
         animator.SetFloat("xVelocity", xVelocity, dampTime, Time.deltaTime);//Damp for smoothing
         animator.SetFloat("zVelocity", zVelocity, dampTime, Time.deltaTime);
+
+        bool playRunAnimation = moveDirection.magnitude > 0 && isRunning;
+        animator.SetBool("isRunning", playRunAnimation);
     }
 
     private void ApplyGravity()
@@ -83,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
         ApplyGravity();
         if (moveDirection.magnitude > 0)
         {
-            characterController.Move(moveDirection * Time.deltaTime * moveSpeed);
+            characterController.Move(moveDirection * Time.deltaTime * walkSpeed);
         }
     }
     private void AimTowardsMouse()
