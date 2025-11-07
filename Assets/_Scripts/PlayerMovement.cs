@@ -5,6 +5,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private InputSystem_Actions inputActions;
     private CharacterController characterController;
+    private Animator animator;
 
     public Vector2 moveInput;
     public Vector2 aimInput;
@@ -12,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     private float verticalVelocity;
     const float GRAVITY = 9.81f;
     const float GROUND_STICK = -.5f;
-
+    private float dampTime =  .1f;
     [Header("Movement")]
     public Vector3 moveDirection;
     [SerializeField] private float moveSpeed = 5f;
@@ -44,12 +45,23 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     private void Update()
     {
         ApplyMovement();
         AimTowardsMouse();
+        AnimatorController();
+    }
+
+    private void AnimatorController()
+    {
+        float xVelocity = Vector3.Dot(moveDirection.normalized, transform.right);
+        float zVelocity = Vector3.Dot(moveDirection.normalized, transform.forward);
+
+        animator.SetFloat("xVelocity", xVelocity, dampTime, Time.deltaTime);//Damp for smoothing
+        animator.SetFloat("zVelocity", zVelocity, dampTime, Time.deltaTime);
     }
 
     private void ApplyGravity()
