@@ -23,7 +23,7 @@ public class WeaponVisualController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        animator = GetComponentInParent<Animator>();
+        animator = GetComponentInChildren<Animator>();
 
         SwitchOnGun(pistol);
     }
