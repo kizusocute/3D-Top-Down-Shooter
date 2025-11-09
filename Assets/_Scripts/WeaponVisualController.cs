@@ -1,12 +1,16 @@
+using System;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class WeaponVisualController : MonoBehaviour
 {
     private Animator animator;
+    private Rig rig;
 
     const string COMMON_WEAPON_LAYER = "Common Weapon Layer";
     const string SHOTGUN_LAYER = "Shotgun Weapon Layer";
     const string SNIPER_RIFLE_LAYER = "Rifle Weapon Layer";
+    const string STR_RELOADING_TRIGGER = "Reload";
 
     [SerializeField] private Transform[] gunTransform;
 
@@ -20,10 +24,16 @@ public class WeaponVisualController : MonoBehaviour
 
     [SerializeField] private Transform currentGun;
 
+    [Header("Rig")]
+
+    [SerializeField] private bool rigShouldBeIncreased = false;
+    [SerializeField] private float rigIncreaseSpeed = 2.5f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
+        rig = GetComponentInChildren<Rig>();
 
         SwitchOnGun(pistol);
     }
@@ -31,10 +41,34 @@ public class WeaponVisualController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        SwitchGunVisual();
+        CheckWeaponSwitch();
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            animator.SetTrigger(STR_RELOADING_TRIGGER);
+            rig.weight = 0.15f;
+        }
+        if (rigShouldBeIncreased)
+        {
+            IncreaseRigWeight();
+        }
     }
 
-    private void SwitchGunVisual()
+    private void IncreaseRigWeight()
+    {
+        rig.weight += rigIncreaseSpeed * Time.deltaTime;
+        if (rig.weight >= 1f)
+        {
+            rig.weight = 1f;
+            rigShouldBeIncreased = false;
+        }
+    }
+
+    public void StartReturnRigWeightToOne()
+    {
+        rigShouldBeIncreased = true;
+    }
+
+    private void CheckWeaponSwitch()
     {
         if(Input.GetKeyDown(KeyCode.Alpha1))
         {
