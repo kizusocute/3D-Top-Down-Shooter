@@ -163,6 +163,7 @@ GameObject:
   - component: {fileID: 119698255}
   - component: {fileID: 119698257}
   - component: {fileID: 119698256}
+  - component: {fileID: 119698258}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -256,6 +257,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23409aa92a3ab9a4caa993fda4a30866, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &119698258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 119698249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6824da976e17fc4997740c0528be9f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gunTransform:
+  - {fileID: 484412369}
+  - {fileID: 187948798}
+  - {fileID: 865143225}
+  - {fileID: 1783572427}
+  - {fileID: 923017205}
+  pistol: {fileID: 484412369}
+  revolver: {fileID: 187948798}
+  autoRifle: {fileID: 865143225}
+  shotgun: {fileID: 1783572427}
+  sniper_rifle: {fileID: 923017205}
+  leftHand: {fileID: 1405148802}
+  currentGun: {fileID: 0}
+  rigShouldBeIncreased: 0
+  rigIncreaseSpeed: 2.5
 --- !u!1 &187948797
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,7 +521,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 255696631}
-  - component: {fileID: 255696632}
   m_Layer: 0
   m_Name: Weapon_Holder
   m_TagString: Untagged
@@ -523,31 +550,6 @@ Transform:
   - {fileID: 923017205}
   m_Father: {fileID: 2504302351120746561}
   m_LocalEulerAnglesHint: {x: -90, y: 104.4, z: 0}
---- !u!114 &255696632
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 255696630}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6824da976e17fc4997740c0528be9f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gunTransform:
-  - {fileID: 484412369}
-  - {fileID: 187948798}
-  - {fileID: 865143225}
-  - {fileID: 1783572427}
-  - {fileID: 923017205}
-  pistol: {fileID: 484412369}
-  revolver: {fileID: 187948798}
-  autoRifle: {fileID: 865143225}
-  shotgun: {fileID: 1783572427}
-  sniper_rifle: {fileID: 923017205}
-  leftHand: {fileID: 1405148802}
-  currentGun: {fileID: 0}
 --- !u!1 &329090417
 GameObject:
   m_ObjectHideFlags: 0
@@ -3428,6 +3430,7 @@ GameObject:
   - component: {fileID: 4394954750566387811}
   - component: {fileID: 4394954750566387813}
   - component: {fileID: 4394954750566387812}
+  - component: {fileID: 4394954750566387814}
   m_Layer: 0
   m_Name: character_main
   m_TagString: Untagged
@@ -3623,6 +3626,18 @@ MonoBehaviour:
   - m_Rig: {fileID: 1333536358}
     m_Active: 1
   m_Effectors: []
+--- !u!114 &4394954750566387814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4014348443674512088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a03699290fbdf0459cd765d128f4d55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &4494688163276384230
 Transform:
   m_ObjectHideFlags: 0
