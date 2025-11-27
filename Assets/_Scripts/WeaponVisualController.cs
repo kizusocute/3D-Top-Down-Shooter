@@ -2,6 +2,12 @@ using System;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
+public enum GrabType
+{
+    SideGrab,
+    BackGrab
+}
+
 public class WeaponVisualController : MonoBehaviour
 {
     private Animator animator;
